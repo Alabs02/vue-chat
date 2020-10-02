@@ -1,0 +1,255 @@
+@import './config';
+
+* {
+    box-sizing: border-box;
+    font-family: $font-stack;
+    text-decoration: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: lighten($color: $brand-text-color, $amount: 60);
+}
+
+h4 {
+    color: $brand-color;
+    font-weight: 500;
+}
+
+.divider {
+    border-top: 1px solid darken($color: $brand-text-color, $amount: 10);
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    padding: 20px 10px;
+    background-color: $brand-color;
+    color: $brand-text-color;
+}
+
+.by {
+    display: block;
+    justify-content: last baseline;
+    align-self: baseline;
+    font-size: .6rem;
+    color: lighten($color: $brand-color, $amount: 5);
+    transform: translateY(4px);
+}
+.brand-text {
+    font-weight: 500;
+    font-size: x-large;
+}
+
+.user-form {
+    padding-top: 20px;
+    &__heading {
+        font-weight: 600;
+    }
+
+    &__form {
+        padding: 10px 0px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    &__input {
+        border-radius: 8px;
+        width: 90%;
+        padding: 6px 10px;
+        line-height: 1;
+        outline: none;
+        color: darken($color: $brand-color, $amount: 10);
+        border: 1.5px solid $brand-color;
+    }
+
+    &__btn {
+        padding: 7px;
+        background-color: $brand-color;
+        color: $brand-text-color;
+        border-radius: 5px;
+        font-size: small;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        margin-left: 4px;
+
+        &:hover {
+            background-color: lighten($color: $brand-color, $amount: 10);
+            transform: scale(1.25);
+        }
+    }
+}
+
+.card {
+    background-color: lighten($color: $brand-text-color, $amount: 1);
+    border-radius: 8px;
+    margin-top: 20px;
+    padding: 10px 0px;
+
+    &__info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 5px;
+        border-radius: 5px;
+        background: darken($color: $brand-text-color, $amount: .8);
+        line-height: 1;
+
+        &:first-child {
+            color: $brand-color;
+            font-weight: 500;
+        }
+    }
+    &__subheading {
+        display: inline-flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-right: 10px;
+        font-size: xx-small;
+        color: #84ae88;
+        font-weight: 500;
+    }
+
+    &__activity {
+        color: darken($color: #263341, $amount: 30);
+        font-size: x-small;
+        // border: 1px solid red;
+        transition: all 0.5s ease-in-out;
+        animation: fadein 0.5s fadeout 0s;
+        margin-left: 30px;
+
+
+        @keyframes fadein {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes fadeout {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+    }
+
+    &__messages {
+        padding: 10px 0px;
+
+        .left {
+            display: flex;
+            justify-content: flex-start;
+        }
+        .right {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+
+    &__item {
+        &--left {
+            margin: 5px 0px 5px 0px;
+            position: relative;
+            padding: 12px;
+            width: 70%;
+            border-radius: 10px;
+            font-size: .9rem;
+            color: darken($color: $brand-color, $amount: 0);
+            background-color: darken($color: $brand-text-color, $amount: 10);
+
+            &::after {
+                content: "";
+                padding: 60px 60px;
+                background: darken($color: $brand-text-color, $amount: 10);
+                position: absolute;
+                top: 15px;
+                right: -115px;
+                clip-path: polygon(13% 5%, 0 0, 0 10%);
+
+            }
+        }
+
+        &--right {
+            margin: 5px 0px 5px 0px;
+            display: block;
+            justify-content: flex-end;
+            position: relative;
+            padding: 12px;
+            width: 70%;
+            border-radius: 10px;
+            font-size: .9rem;
+            text-align: right;
+            color: darken($color: $brand-color, $amount: 0);
+            background-color: darken($color: $brand-text-color, $amount: 10);
+
+            &::before {
+                content: "";
+                padding: 60px 60px;
+                // border: 1px solid blue;
+                background-color: darken($color: $brand-text-color, $amount: 10);;
+                position: absolute;
+                top: 15px;
+                left: -10px;
+                clip-path: polygon(13% 0, 0 5%, 13% 11%);
+            }
+        }
+    }
+
+    &__body {
+        padding: 20px 0px;
+    }
+
+    &__form {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__input {
+        padding: 12px 10px;
+        width: 80%;
+        outline: none;
+        border-radius: 10px;
+        border: none;
+        color: $brand-color;
+        font-size: small;
+    }
+
+    &__btn {
+        color: $brand-color;
+        border: none;
+        cursor: pointer;
+        font-size: x-large;
+        transition: all 0.3s ease-in-out;
+        border-radius: 50%;
+        padding: 5px;
+
+        &:hover {
+            transform: rotate(-50deg);
+            color: lighten($color: $brand-color, $amount: 10);
+            background-color: darken($color: $brand-text-color, $amount: 10);
+        }
+    }
+}
+
+.container {
+    margin:0 auto;
+    max-width:1280px;
+    width:90%
+}
+
+@media only screen and (min-width: 601px) {
+    .container{width:85%}
+}
+@media only screen and (min-width: 993px) {
+    .container{width:70%}
+}

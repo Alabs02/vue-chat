@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bundle.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Socket.io App</title>
+</head>
+<body>
+    <div id="app">
+        <div class="wrapper">
+            <header>
+                <nav class="navbar">
+                    <div class="brand-text">Vue Socket Chat App</div>
+                </nav>
+            </header>
+
+            <main class="main__content">
+                <div class="container">
+                    <div v-if="!ready" class="user-form">
+                        <h4 class="user-form__heading">Set Username</h4>
+                        <form @submit.prevent class="user-form__form">
+                            <input @keydown.enter="addUser" v-model="name" placeholder="Enter Username" class="user-form__input" type="text" name="name" id="name">
+                            <a @click.prevent="addUser" class="user-form__btn">Add</a>
+                        </form>
+                    </div>
+
+                    <div v-else class="card">
+                        <div class="container">
+                            <h4 class="card__heading">Messages <span class="card__subheading">{{ connections }} connections</span></h4>
+                            <div class="card__info">
+                                <small>{{ name }}</small>
+                                <small v-if="typing" class="card__activity">{{typing}} is typing</small>
+                            </div>
+                            <div class="users-status">
+                                <ul v-for="(item, i) in info" :key="i">
+                                    <li style="font-size: xx-small;"><span>{{ item.name }}</span><span> has {{ item.type}}</span></li>
+                                </ul>
+                            </div>
+                            <!-- <div class="divider"></div> -->
+
+                            <div class="card__messages">
+                                <ul v-for="(message, i) in messages" :key="i" :class="{ right: message.type === 1, 'left': message.type === 0 }">
+                                    <li :class="{ 'card__item--right': message.type === 1, 'card__item--left': message.type === 0 }">
+                                        {{ message.msg }}
+                                        <small class="by"><p>{{ message.by }}</p></small>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="card__body">
+                                <form @submit.prevent ref="form" class="card__form">
+                                    <input v-model="newMsg" @keydown.enter="sendMsg" placeholder="Type a message" class="card__input" type="text" name="text">
+                                    <a @click.prevent="sendMsg" type="submit" class="material-icons card__btn">send</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="footer__app">
+
+            </footer>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const socket = io();
+        let app = new Vue({
+            el: '#app',
+
+            data() {
+                return {
+                    newMsg: null,
+                    name: null,
+
+                    messages: [],
+                    info: [],
+
+                    // Typing activity
+                    typing: false,
+                    // Toggle view
+                    ready: false,
+                    connections: 0
+                }
+            },
+
+            watch: {
+                newMsg(val) {
+                    val ? socket.emit('typing', this.name) : socket.emit('stop_typing')
+                },
+            },
+
+            created() {
+                window.onbeforeunload = () => {
+                    socket.emit('leaved', this.name)
+                }
+
+                socket.emit('Created', 'alabs')
+                socket.on('Created', data => {
+                    console.log(data)
+                })
+
+                socket.on('connections', (data) => {
+                    this.connections = data
+                })
+
+                socket.on('new-message', data => {
+                    this.messages.push({msg: data.msg, type: 1, by: data.user})
+                })
+
+                socket.on('typing', (name) => {
+                    this.typing = name
+                })
+
+                socket.on('stop_typing', () => {
+                    this.typing = false
+                })
+
+                socket.on('joined', (data) => {
+                    this.info.push({name: data, type: 'joined', status: 'online'})
+                    setTimeout(() => {
+                        this.info = []
+                    }, 5000);
+                })
+
+                socket.on('leaved', (data) => {
+                    this.info.push({name: data, type: 'left', status: 'offline'})
+                    setTimeout(() => {
+                        this.info = []
+                    }, 5000);
+                })
+            },
+
+            methods: {
+                resetForm() {
+                    this.$refs.form.reset()
+                },
+
+                addUser() {
+                    this.ready = true
+                    socket.emit('joined', this.name)
+                },
+
+                sendMsg() {
+                    // Update messages array
+                    this.messages.push({msg:this.newMsg, type: 0, by: 'Me'})
+                    console.log('Messages:', this.messages)
+
+                    // Emit socket
+                    socket.emit('new-massage', {msg: this.newMsg, user: this.name})
+                    this.newMsg = ''
+                    this.resetForm()
+                },
+            },
+        })
+    </script>
+</body>
+</html>

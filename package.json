@@ -1,0 +1,23 @@
+{
+  "name": "vue-socket.io",
+  "version": "1.0.0",
+  "description": "A realtime chat app build with vuejs, expressjs and socket.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alabs02/vue-chat.git"
+  },
+  "author": "Alabs <alabson.inc@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alabs02/vue-chat/issues"
+  },
+  "homepage": "https://github.com/Alabs02/vue-chat#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}
